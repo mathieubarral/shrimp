@@ -2,7 +2,7 @@
 
 const char *get_token_kind_symbol_str(shrimp_token_kind kind)
 {
-    const char *token_str_list[9] = {
+    const char *token_str_list[SHRIMP_SYMBOL_ENUM_SIZE] = {
         "SHRIMP_TOKEN_KIND_OPEN_PAR",
         "SHRIMP_TOKEN_KIND_CLOSE_PAR",
         "SHRIMP_TOKEN_KIND_OPEN_CURL",
@@ -19,7 +19,7 @@ const char *get_token_kind_symbol_str(shrimp_token_kind kind)
 
 const char *get_token_kind_operator_str(shrimp_token_kind kind)
 {
-    const char *token_str_list[20] = {
+    const char *token_str_list[SHRIMP_OPERATOR_ENUM_SIZE] = {
         "SHRIMP_TOKEN_KIND_LINK",
         "SHRIMP_TOKEN_KIND_INV_EQU",
         "SHRIMP_TOKEN_KIND_EQU_EQU",
@@ -47,7 +47,7 @@ const char *get_token_kind_operator_str(shrimp_token_kind kind)
 
 const char *get_token_kind_keyword_str(shrimp_token_kind kind)
 {
-    const char *token_str_list[13] = {
+    const char *token_str_list[SHRIMP_KEYWORD_ENUM_SIZE] = {
         "SHRIMP_TOKEN_KIND_IMPORT",
         "SHRIMP_TOKEN_KIND_AS",
         "SHRIMP_TOKEN_KIND_FUNCDEF",
@@ -68,7 +68,7 @@ const char *get_token_kind_keyword_str(shrimp_token_kind kind)
 
 const char *get_token_kind_str(shrimp_token_type type, shrimp_token_kind kind)
 {
-    const char *(*func_list[3])(shrimp_token_kind kind) = {
+    const char *(*func_list[])(shrimp_token_kind kind) = {
         get_token_kind_symbol_str,
         get_token_kind_keyword_str,
         get_token_kind_operator_str

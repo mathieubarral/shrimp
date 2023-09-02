@@ -1,5 +1,7 @@
 #include "shrimp.h"
 
+// TODO: Implement parser
+// TODO: Fix memory leaks
 // TODO: Handle argument flags
 
 int main(int argc, char **argv)

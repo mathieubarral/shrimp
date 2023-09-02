@@ -2,7 +2,7 @@
 
 shrimp_token_node_t *check_is_keyword(shrimp_lexer_t *lexer)
 {
-    shrimp_token_kind_list_t token_list[13] = {
+    shrimp_token_kind_list_t token_list[SHRIMP_KEYWORD_ENUM_SIZE] = {
         {"import", SHRIMP_TOKEN_KIND_IMPORT},
         {"as", SHRIMP_TOKEN_KIND_AS},
         {"funcdef", SHRIMP_TOKEN_KIND_FUNCDEF},
@@ -22,7 +22,7 @@ shrimp_token_node_t *check_is_keyword(shrimp_lexer_t *lexer)
 
     if (!lexer->token) return (NULL);
 
-    for (int index = 0; index < 13; index++) {
+    for (int index = 0; index < SHRIMP_KEYWORD_ENUM_SIZE; index++) {
         if (!strcmp(lexer->token, token_list[index].value)) {
             lexer->buffer += strlen(lexer->token);
             return (create_new_token_node(SHRIMP_TOKEN_TYPE_KEYWORD, token_list[index].kind, lexer->token));

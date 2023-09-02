@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(Shrimp VERSION 0.0.1)
 
 include_directories("include")
-include_directories("src/log/include")
+include_directories("src/logger/include")
 include_directories("src/io/include")
 include_directories("src/lexer/include")
 

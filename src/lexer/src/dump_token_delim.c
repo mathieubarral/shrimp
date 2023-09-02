@@ -1,6 +1,6 @@
 #include "shrimp_lexer.h"
 
-void dump_token_until(shrimp_lexer_t *lexer, char delim)
+void dump_token_delim(shrimp_lexer_t *lexer, char delim)
 {
     int length = 0;
 

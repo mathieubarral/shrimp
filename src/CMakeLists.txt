@@ -1,4 +1,4 @@
-add_subdirectory("log")
+add_subdirectory("logger")
 add_subdirectory("io")
 add_subdirectory("lexer")
 

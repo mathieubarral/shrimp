@@ -6,6 +6,7 @@
     #include "shrimp_io.h"
     #include "shrimp_lexer.h"
 
+    // Shrimp main structure
     typedef struct shrimp_s {
         shrimp_io_t io;
         shrimp_lexer_t lexer;

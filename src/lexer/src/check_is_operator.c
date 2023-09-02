@@ -13,7 +13,7 @@ int try_match_token(char *token, shrimp_token_kind_list_t *token_list, int list_
 shrimp_token_node_t *check_is_operator(shrimp_lexer_t *lexer)
 {
     int ret = 0;
-    shrimp_token_kind_list_t token_list[20] = {
+    shrimp_token_kind_list_t token_list[SHRIMP_OPERATOR_ENUM_SIZE] = {
         {"::", SHRIMP_TOKEN_KIND_LINK},
         {"!=", SHRIMP_TOKEN_KIND_INV_EQU},
         {"==", SHRIMP_TOKEN_KIND_EQU_EQU},
@@ -36,10 +36,10 @@ shrimp_token_node_t *check_is_operator(shrimp_lexer_t *lexer)
         {"!", SHRIMP_TOKEN_KIND_INVERT},
     };
 
-    for (int index = 0; index < 20; index++) {
+    for (int index = 0; index < SHRIMP_OPERATOR_ENUM_SIZE; index++) {
         if (*lexer->buffer == *token_list[index].value) {
             dump_token_len(lexer, strlen(token_list[index].value));
-            if ((ret = try_match_token(lexer->token, token_list, 20)) > -1) {
+            if ((ret = try_match_token(lexer->token, token_list, SHRIMP_OPERATOR_ENUM_SIZE)) > -1) {
                 lexer->buffer += strlen(lexer->token);
                 return (create_new_token_node(SHRIMP_TOKEN_TYPE_OPERATOR, token_list[ret].kind, token_list[ret].value));
             }

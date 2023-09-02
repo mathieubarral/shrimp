@@ -1,8 +1,11 @@
 funcref write(fd: u8, str: u8[], len: u64);
 
+# this is a comment
+
 funcdef start(none): u8 {
-    stdout: u8 = 1;
-    world: u8[] = "world";
+    char: u8 = 'A';
+    stdout: u8 = 21;
+    world: u8[] = "world"; # this is an inline comment
 
     write(stdout, "Hello, ", 7);
     write(stdout, world, 5);
