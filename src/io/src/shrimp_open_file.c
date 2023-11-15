@@ -6,8 +6,8 @@ void shrimp_print_file_infos(struct stat stat)
     shrimp_log(SHRIMP_DEBUG, "File info successfully retrieved");
     fprintf(stdout, "\towner id: %d\n", stat.st_uid);
     fprintf(stdout, "\tgroup id: %d\n", stat.st_gid);
-    fprintf(stdout, "\tfile size: %ld\n", stat.st_size);
-    fprintf(stdout, "\tblocks allocated: %ld\n", stat.st_blocks);
+    fprintf(stdout, "\tfile size: %lld\n", stat.st_size);
+    fprintf(stdout, "\tblocks allocated: %lld\n", stat.st_blocks);
 }
 #endif
 

@@ -10,6 +10,4 @@ void push_to_token_list(shrimp_lexer_t *lexer, shrimp_token_node_t *new_node)
         for (; tmp->next; tmp = tmp->next);
         tmp->next = new_node;
     }
-
-    lexer->list_size++;
 }

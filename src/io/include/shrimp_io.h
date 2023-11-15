@@ -1,7 +1,7 @@
 #ifndef SHRIMP_IO_H
     #define SHRIMP_IO_H
 
-    #include "shrimp_log.h"
+    #include "shrimp_logger.h"
     #include "shrimp_common.h"
 
     // Shrimp file structure

@@ -3,6 +3,8 @@
 // TODO: Implement parser
 // TODO: Fix memory leaks
 // TODO: Handle argument flags
+// TODO: Implement error visualisation
+// TODO: Implement multiple file handling
 
 int main(int argc, char **argv)
 {
@@ -17,6 +19,8 @@ int main(int argc, char **argv)
     shrimp_read_file(&shrimp.io.in);
     shrimp_init_lexer(&shrimp.lexer, shrimp.io.in);
     shrimp_tokenize(&shrimp.lexer);
+    shrimp_parse(shrimp.lexer.token_list);
     shrimp_close_file(shrimp.io.in);
+
     return (EXIT_SUCCESS);
 }

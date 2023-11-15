@@ -1,4 +1,4 @@
-#include "shrimp_log.h"
+#include "shrimp_logger.h"
 
 void shrimp_log_fatal(shrimp_log_t log)
 {

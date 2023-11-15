@@ -6,28 +6,19 @@ void print_token_list(shrimp_lexer_t *lexer)
     const char *token_kind_str = NULL;
 
     for (shrimp_token_node_t *tmp = lexer->token_list; tmp; tmp = tmp->next) {
-        token_type_str = get_token_type_str(tmp->type);
-        token_kind_str = get_token_kind_str(tmp->type, tmp->token.kind);
-        fprintf(stdout, "token: <'%s', %s, %s>\n", tmp->token.value, token_type_str, token_kind_str);
+        token_type_str = get_token_type_str(tmp->token.type);
+        fprintf(stdout, "token: <'%s', %zu, %zu, %zu, %s>\n", tmp->token.value, tmp->token.pos.line, tmp->token.pos.col, tmp->token.size, token_type_str);
     }
 }
 
-bool is_unwanted_char(char curr_char)
+void buffer_forward(shrimp_lexer_t *lexer, size_t len)
 {
-    char unwanted[4] = {' ', '\t', '\n', '\r'};
-
-    for (int index = 0; index < 4; index++) {
-        if (curr_char == unwanted[index])
-            return (true);
+    for (int index = 0; index < len; index++, lexer->buffer++) {
+        if (*(lexer->buffer) == '\n') {
+            lexer->pos.col = 1;
+            lexer->pos.line++;
+        }
     }
-    return (false);
-}
-
-void skip_unwanted(shrimp_lexer_t *lexer)
-{
-    for (; is_unwanted_char(*lexer->buffer); lexer->buffer++);
-    if (*lexer->buffer == '#')
-        for (int index = 0; *lexer->buffer && *lexer->buffer != '\n'; lexer->buffer++);
 }
 
 void shrimp_tokenize(shrimp_lexer_t *lexer)
@@ -44,13 +35,17 @@ void shrimp_tokenize(shrimp_lexer_t *lexer)
 
     while (*lexer->buffer) {
         skip_unwanted(lexer);
+
         for (int index = 0; func_list[index]; index++) {
             if ((ret = func_list[index](lexer))) {
                 push_to_token_list(lexer, ret);
+                lexer->pos.col += ret->token.size;
                 break;
             }
         }
-        if (!ret) lexer->buffer++;
+
+        if (!ret) shrimp_log(SHRIMP_FATAL, "%zu:%zu -> unknown symbol '%c'", lexer->pos.line, lexer->pos.col, *lexer->buffer);
+
         free(lexer->token);
         lexer->token = NULL;
         ret = NULL;

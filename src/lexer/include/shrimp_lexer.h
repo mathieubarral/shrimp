@@ -4,100 +4,87 @@
     #include "shrimp_common.h"
     #include "shrimp_io.h"
 
-    // Shrimp keywords enum
-    typedef enum {
-        SHRIMP_TOKEN_KIND_IMPORT,
-        SHRIMP_TOKEN_KIND_AS,
-        SHRIMP_TOKEN_KIND_FUNCDEF,
-        SHRIMP_TOKEN_KIND_FUNCREF,
-        SHRIMP_TOKEN_KIND_TYPEDEF,
-        SHRIMP_TOKEN_KIND_IF,
-        SHRIMP_TOKEN_KIND_ELIF,
-        SHRIMP_TOKEN_KIND_ELSE,
-        SHRIMP_TOKEN_KIND_FOR,
-        SHRIMP_TOKEN_KIND_WHILE,
-        SHRIMP_TOKEN_KIND_RETURN,
-        SHRIMP_TOKEN_KIND_NEW,
-        SHRIMP_TOKEN_KIND_UNDEF,
-        SHRIMP_KEYWORD_ENUM_SIZE
-    } shrimp_keyword_type;
+    #define SHRIMP_SYMBOL_SIZE 9
+    #define SHRIMP_KEYWORD_SIZE 13
+    #define SHRIMP_OPERATOR_SIZE 20
 
-    // Shrimp operators enum
+    // Shrimp token type enum
     typedef enum {
-        SHRIMP_TOKEN_KIND_LINK,
-        SHRIMP_TOKEN_KIND_INV_EQU,
-        SHRIMP_TOKEN_KIND_EQU_EQU,
-        SHRIMP_TOKEN_KIND_LESS_EQU,
-        SHRIMP_TOKEN_KIND_GREAT_EQU,
-        SHRIMP_TOKEN_KIND_PLUS_EQU,
-        SHRIMP_TOKEN_KIND_MINUS_EQU,
-        SHRIMP_TOKEN_KIND_MULT_EQU,
-        SHRIMP_TOKEN_KIND_DIV_EQU,
-        SHRIMP_TOKEN_KIND_AT,
-        SHRIMP_TOKEN_KIND_DOT,
-        SHRIMP_TOKEN_KIND_BIND,
-        SHRIMP_TOKEN_KIND_EQUAL,
-        SHRIMP_TOKEN_KIND_PLUS,
-        SHRIMP_TOKEN_KIND_MINUS,
-        SHRIMP_TOKEN_KIND_MULTIPLY,
-        SHRIMP_TOKEN_KIND_DIVIDE,
-        SHRIMP_TOKEN_KIND_LESS,
-        SHRIMP_TOKEN_KIND_GREAT,
-        SHRIMP_TOKEN_KIND_INVERT,
-        SHRIMP_OPERATOR_ENUM_SIZE
-    } shrimp_operator_type;
+        SHRIMP_TOKEN_KEYWORD_IMPORT,
+        SHRIMP_TOKEN_KEYWORD_AS,
+        SHRIMP_TOKEN_KEYWORD_FUNCDEF,
+        SHRIMP_TOKEN_KEYWORD_FUNCREF,
+        SHRIMP_TOKEN_KEYWORD_TYPEDEF,
+        SHRIMP_TOKEN_KEYWORD_IF,
+        SHRIMP_TOKEN_KEYWORD_ELIF,
+        SHRIMP_TOKEN_KEYWORD_ELSE,
+        SHRIMP_TOKEN_KEYWORD_FOR,
+        SHRIMP_TOKEN_KEYWORD_WHILE,
+        SHRIMP_TOKEN_KEYWORD_RETURN,
+        SHRIMP_TOKEN_KEYWORD_NEW,
+        SHRIMP_TOKEN_KEYWORD_UNDEF,
 
-    // Shrimp symbols enum
-    typedef enum {
-        SHRIMP_TOKEN_KIND_OPEN_PAR,
-        SHRIMP_TOKEN_KIND_CLOSE_PAR,
-        SHRIMP_TOKEN_KIND_OPEN_CURL,
-        SHRIMP_TOKEN_KIND_CLOSE_CURL,
-        SHRIMP_TOKEN_KIND_OPEN_BRACKET,
-        SHRIMP_TOKEN_KIND_CLOSE_BRACKET,
-        SHRIMP_TOKEN_KIND_SEMICOLON,
-        SHRIMP_TOKEN_KIND_COLON,
-        SHRIMP_TOKEN_KIND_REFERENCE,
-        SHRIMP_SYMBOL_ENUM_SIZE
-    } shrimp_symbol_type;
+        SHRIMP_TOKEN_OPERATOR_LINK,
+        SHRIMP_TOKEN_OPERATOR_INV_EQU,
+        SHRIMP_TOKEN_OPERATOR_EQU_EQU,
+        SHRIMP_TOKEN_OPERATOR_LESS_EQU,
+        SHRIMP_TOKEN_OPERATOR_GREAT_EQU,
+        SHRIMP_TOKEN_OPERATOR_PLUS_EQU,
+        SHRIMP_TOKEN_OPERATOR_MINUS_EQU,
+        SHRIMP_TOKEN_OPERATOR_MULT_EQU,
+        SHRIMP_TOKEN_OPERATOR_DIV_EQU,
+        SHRIMP_TOKEN_OPERATOR_AT,
+        SHRIMP_TOKEN_OPERATOR_DOT,
+        SHRIMP_TOKEN_OPERATOR_BIND,
+        SHRIMP_TOKEN_OPERATOR_EQUAL,
+        SHRIMP_TOKEN_OPERATOR_PLUS,
+        SHRIMP_TOKEN_OPERATOR_MINUS,
+        SHRIMP_TOKEN_OPERATOR_MULTIPLY,
+        SHRIMP_TOKEN_OPERATOR_DIVIDE,
+        SHRIMP_TOKEN_OPERATOR_LESS,
+        SHRIMP_TOKEN_OPERATOR_GREAT,
+        SHRIMP_TOKEN_OPERATOR_INVERT,
 
-    // Shrimp token kinds union
-    typedef union {
-        int empty;
-        shrimp_symbol_type symb;
-        shrimp_keyword_type key;
-        shrimp_operator_type op;
-    } shrimp_token_kind;
+        SHRIMP_TOKEN_SYMBOL_OPEN_PAR,
+        SHRIMP_TOKEN_SYMBOL_CLOSE_PAR,
+        SHRIMP_TOKEN_SYMBOL_OPEN_CURL,
+        SHRIMP_TOKEN_SYMBOL_CLOSE_CURL,
+        SHRIMP_TOKEN_SYMBOL_OPEN_BRACKET,
+        SHRIMP_TOKEN_SYMBOL_CLOSE_BRACKET,
+        SHRIMP_TOKEN_SYMBOL_SEMICOLON,
+        SHRIMP_TOKEN_SYMBOL_COLON,
+        SHRIMP_TOKEN_SYMBOL_REFERENCE,
 
-    // Shrimp token types enum
-    typedef enum {
-        SHRIMP_TOKEN_TYPE_SYMBOL,
-        SHRIMP_TOKEN_TYPE_KEYWORD,
-        SHRIMP_TOKEN_TYPE_OPERATOR,
         SHRIMP_TOKEN_TYPE_ID,
         SHRIMP_TOKEN_TYPE_LIT_INT,
         SHRIMP_TOKEN_TYPE_LIT_CHAR,
         SHRIMP_TOKEN_TYPE_LIT_STRING,
+
         SHRIMP_TOKEN_TYPE_ENUM_SIZE
     } shrimp_token_type;
 
     // Shrimp token kind list structure
     typedef struct shrimp_token_id_s {
         const char *value;
-        shrimp_token_kind kind;
-    } shrimp_token_kind_list_t;
+        shrimp_token_type type;
+    } shrimp_token_type_list_t;
+
+    typedef struct shrimp_lexer_pos_s {
+        size_t line;
+        size_t col;
+    } shrimp_lexer_pos_t;
 
     // Shrimp token structure
     typedef struct shrimp_token_s {
         size_t size;
         char *value;
-        shrimp_token_kind kind;
+        shrimp_lexer_pos_t pos;
+        shrimp_token_type type;
     } shrimp_token_t;
 
     // Shrimp token node structure
     typedef struct shrimp_token_node_s {
         shrimp_token_t token;
-        shrimp_token_type type;
         struct shrimp_token_node_s *next;
     } shrimp_token_node_t;
 
@@ -105,8 +92,7 @@
     typedef struct shrimp_lexer_s {
         char *token;
         char *buffer;
-        size_t list_size;
-        size_t buffer_size;
+        shrimp_lexer_pos_t pos;
         shrimp_token_node_t *token_list;
     } shrimp_lexer_t;
 
@@ -121,9 +107,24 @@
     /**
      * @brief Tokenize given lexer
      *
-     * @param lexer Pointer to initialized lexer
+     * @param lexer Pointer to lexer
      */
     void shrimp_tokenize(shrimp_lexer_t *lexer);
+
+    /**
+     * @brief Fast forward buffer from len
+     *
+     * @param lexer Pointer to lexer
+     * @param len Length to forward the buffer
+     */
+    void buffer_forward(shrimp_lexer_t *lexer, size_t len);
+
+    /**
+     * @brief Skip unwanted characters
+     *
+     * @param lexer Pointer to lexer
+     */
+    void skip_unwanted(shrimp_lexer_t *lexer);
 
     /**
      * @brief Dump token based on length
@@ -152,13 +153,12 @@
     /**
      * @brief Create a new token node object
      *
+     * @param lexer Pointer to lexer
      * @param type Token type
-     * @param kind Token kind
-     * @param value Token value
      *
      * @return Pointer to new token node
      */
-    shrimp_token_node_t *create_new_token_node(shrimp_token_type type, shrimp_token_kind kind, const char *value);
+    shrimp_token_node_t *create_new_token_node(shrimp_lexer_t *lexer, shrimp_token_type type);
 
     /**
      * @brief Push given node to token node list
@@ -211,15 +211,5 @@
      * @return Token type printable string
      */
     const char *get_token_type_str(shrimp_token_type type);
-
-    /**
-     * @brief Get the token kind printable string
-     *
-     * @param type Token type
-     * @param kind Token kind
-     *
-     * @return Token kind printable string
-     */
-    const char *get_token_kind_str(shrimp_token_type type, shrimp_token_kind kind);
 
 #endif

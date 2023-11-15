@@ -1,17 +1,17 @@
-#include "shrimp_log.h"
+#include "shrimp_logger.h"
 
 void log_check_errno(FILE *out, const char *type_str, char *format_log_msg)
 {
     if (errno)
-        fprintf(out, "[%s]: %s (%s)\n", type_str, format_log_msg, strerror(errno));
+        fprintf(out, "[%s] %s (%s)\n", type_str, format_log_msg, strerror(errno));
     else
-        fprintf(out, "[%s]: %s\n", type_str, format_log_msg);
+        fprintf(out, "[%s] %s\n", type_str, format_log_msg);
 }
 
 void format_log_msg(shrimp_log_t *log, const char *log_msg, va_list *args)
 {
     if (vasprintf(&log->format_msg, log_msg, *args) < 0) {
-        fprintf(stderr, "[%s]: Memory allocation for logging message failed\n", D_RED(FATAL));
+        fprintf(stderr, "[%s] Memory allocation for logging message failed\n", D_RED(FATAL));
         va_end(*args);
         exit(EXIT_FAILURE);
     }
