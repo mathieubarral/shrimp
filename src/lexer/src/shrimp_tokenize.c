@@ -3,7 +3,6 @@
 void print_token_list(shrimp_lexer_t *lexer)
 {
     const char *token_type_str = NULL;
-    const char *token_kind_str = NULL;
 
     for (shrimp_token_node_t *tmp = lexer->token_list; tmp; tmp = tmp->next) {
         token_type_str = get_token_type_str(tmp->token.type);

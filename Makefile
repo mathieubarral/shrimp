@@ -1,14 +1,14 @@
 .PHONY: release
 release:
-	@cmake -DCMAKE_BUILD_TYPE=Release -B build/ -DCMAKE_GENERATOR=Ninja && cmake --build build/
+	@meson setup --buildtype=release build/ && meson compile -C build/
 
 .PHONY: debug
 debug:
-	@cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_GENERATOR=Ninja -B build/ && cmake --build build/
+	@meson setup --buildtype=debug build/ && meson compile -C build/
 
 .PHONY: test
 test:
-	@ninja -C build/ coverage || (echo "Use 'make debug' to generate CTest files")
+	@ninja -C build/ coverage || (echo "Use 'make debug' to generate needed files")
 
 .PHONY: cov
 cov:

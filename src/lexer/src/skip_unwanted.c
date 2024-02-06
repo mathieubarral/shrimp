@@ -16,6 +16,6 @@ void skip_unwanted(shrimp_lexer_t *lexer)
             lexer->pos.col += (*lexer->buffer != '\n') ? 1 : 0;
 
         if (*lexer->buffer == '#')
-            for (int index = 0; *lexer->buffer && *lexer->buffer != '\n'; buffer_forward(lexer, 1), lexer->pos.col++);
+            for (; *lexer->buffer && *lexer->buffer != '\n'; buffer_forward(lexer, 1), lexer->pos.col++);
     }
 }

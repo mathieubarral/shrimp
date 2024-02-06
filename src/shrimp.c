@@ -5,6 +5,7 @@
 // TODO: Handle argument flags
 // TODO: Implement error visualisation
 // TODO: Implement multiple file handling
+// TODO: Create BNF file of the syntax
 
 int main(int argc, char **argv)
 {

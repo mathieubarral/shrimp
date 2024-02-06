@@ -1,4 +1,4 @@
-# shrimp
+# shrimp 🦐
 A basic compiler for custom compiled high-level language
 
 ## Requirements
